@@ -1,0 +1,11 @@
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\bin\Debug\InvoiceScrapingTool2.exe.config
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\bin\Debug\InvoiceScrapingTool2.exe
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\bin\Debug\InvoiceScrapingTool2.pdb
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\obj\Debug\InvoiceScrapingTool2.csprojResolveAssemblyReference.cache
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\obj\Debug\InvoiceScrapingTool2.Properties.Resources.resources
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\obj\Debug\InvoiceScrapingTool2.csproj.GenerateResource.Cache
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\obj\Debug\InvoiceScrapingTool2.exe
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\obj\Debug\InvoiceScrapingTool2.pdb
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\bin\Debug\GenerelFunctions.dll
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\bin\Debug\GenerelFunctions.pdb
+D:\Bhavesh Jadav\Projects\Scraping Tools\InvoiceScrapingTool2\InvoiceScrapingTool2\obj\Debug\InvoiceScrapingTool2.InvoiceDataScrapingTool.resources
