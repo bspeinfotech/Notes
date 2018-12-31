@@ -1,0 +1,474 @@
+﻿======================================================= AngularJS ========================================= (5/7/2017)
+------------------------------------------------------ Guide Links ---------------------------------------------------
+https://www.w3schools.com/angular/default.asp
+https://docs.angularjs.org/guide/introduction
+
+------------------------------------------------------- 5/7/2017 -----------------------------------------------------
+link : https://www.w3schools.com/angular
+-> must add script after start <html> element 
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+1)---------------------------------------------------- Angular Home --------------------------------------------------
+-> AngularJS Example
+	<div ng-app="">
+	  <p>Name : <input type="text" ng-model="name"></p>
+	  <h1>Hello {{name}}</h1>
+	</div>
+	
+-> AngularJS History
+	* AngularJS version 1.0 was released in 2012.
+	* Miško Hevery, a Google employee, started to work with AngularJS in 2009.
+		
+------ 6/7/2017 -------
+2)---------------------------------------------------- Angular Intro -------------------------------------------------- 
+-> AngularJS Extends HTML
+	* ng-app=""
+	* ng-model="name"
+	* ng-bind="name"
+
+->	ng-app directive defines the application
+->	ng-model directive binds the value of the input field to the application variable name.
+->	ng-bind directive binds the innerHTML	
+	
+-> AngularJS Directives
+	* ng-app=""
+	* ng-init="firstName='John'"
+	* ng-bind="firstName"
+	
+	* Alternatively with valid HTML:
+	* data-ng-app=""
+	* data-ng-init="firstName='John'"
+	* data-ng-bind="firstName"
+	
+-> AngularJS Expressions
+	* ng-app=""
+	  {{ 5 + 5 }}    output:10
+	
+	* <input type="text" ng-model="name">
+	  <p>{{name}}</p>
+
+-> AngularJS Applications
+	* The ng-app directive defines the application. 
+	* The ng-controller directive defines the controller.
+		example : <div ng-app="myApp" ng-controller="myCtrl">
+
+	* AngularJS modules define AngularJS applications.
+		example : var app = angular.module('myApp', []);
+		
+	* AngularJS controllers control AngularJS applications.
+		example : app.controller('myCtrl', function($scope) {
+					$scope.firstName= "John";
+					$scope.lastName= "Doe";
+				  });
+				  
+3)---------------------------------------------------- AngularJS Expressions -------------------------------------------------- 
+-> AngularJS Expressions
+	* written inside double braces: {{ expression }}
+	* written inside a directive: ng-bind="expression"
+	* much like JavaScript expressions
+	* contain literals, operators, and variables
+	* Example: {{ 5 + 5 }} or {{ firstName + " " + lastName }}
+	
+	* Example: Let AngularJS change the value of CSS properties.
+				<div ng-app="" ng-init="myCol='lightblue'">
+					<input style="background-color:{{myCol}}" ng-model="myCol" value="{{myCol}}">
+				</div>
+				
+-> AngularJS Numbers (with expression/ng-bind)
+	* Example(with expression): 
+		<div ng-app="" ng-init="quantity=1;cost=5">
+			<p>Total in dollar: {{ quantity * cost }}</p>
+		</div>
+			 
+-> AngularJS Strings (with expression/ng-bind)
+	* Example(with expression): 
+		<div ng-app="" ng-init="firstName='B.spe.~';lastName='Jadav'">
+			<p>The name is {{ firstName + " " + lastName }}</p>
+		</div>
+		
+-> AngularJS Objects (with expression/ng-bind)						 
+	* Example(with expression):
+		<div ng-app="" ng-init="person={firstName:'John',lastName:'Doe'}">
+			<p>The name is {{ person.lastName }}</p>	
+		</div>
+					
+-> AngularJS Arrays (with expression/ng-bind)
+	* ng-init="points=[1,15,19,2,40]"
+	* {{points[2]}}
+
+4)---------------------------------------------------- AngularJS Modules -------------------------------------------------- 	
+-> Creating a Module
+	* ng-app="myApp"
+	* <script>
+		var objMyApp = angular.module("myApp",[]);
+	  </script>
+	
+-> Adding a Controller
+	* ng-app="myApp" ng-controller="myCtrl"
+	* <script>
+		var app = angular.module("myApp",[]);
+		app.cotroller("myCtrl", function($scope){
+			$scope.fileName = "B.spe.~";
+			$scope.lastName = "Jadav";
+		});
+		</script>
+	
+-> Adding a Directive
+	* ng-app="myApp" w3-test-directive
+	* <script>
+			var app = angular.directive("W3TestDirective", function(){
+				return { template : I was made a directive constructor };
+			});
+		</script>
+	
+-> Modules and Controllers in Files	
+-> When to Load the Library
+
+5)---------------------------------------------------- AngularJS Directives --------------------------------------------------~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-> AngularJS Directives
+	* ng-app
+	* ng-model
+	* ng-bind
+	
+-> Data Binding	
+	* {{ firstName }} is bound with ng-model="firstName"
+	
+-> Repeating HTML Elements
+	* ng-repeat directive
+	* example : 
+		<div ng-app="" ng-init="arr_Name=[
+		{Name='bhavesh',City='Rajkot'},
+		{Name='karan',City='Baroda'}]>
+			<ul>
+				<li ng-repeat="person in arr_Name"> {{person.Name + "," + person.City}} </li>
+			</ul>
+		</div>
+	
+-> The ng-app Directive
+	* defines the root element of an AngularJS application
+	* will auto-bootstrap (automatically initialize) the application when a web page is loaded
+	
+-> The ng-init Directive
+	* ng-init directive defines initial values
+	
+-> The ng-model Directive
+	* ng-model directive binds the value of HTML controls (input, select, textarea) to application data
+	* Provide type validation for application data (number, email, required)
+	* Provide status for application data (invalid, dirty, touched, error)
+	* Provide CSS classes for HTML elements
+	* Bind HTML elements to HTML forms
+
+-> Create New Directives
+	* using .directive function
+	* example :
+		<div ng-app="myApp"></div>
+		<script>
+			var app = angular.module("myApp",[]);
+			var myDirective = app.directive("BspeDirective",function(){
+				return { template : " <h1> This is my first directive </h1>"};
+			});
+		</script>
+
+	* directive invoke by using 
+		elementName : <BspeDirective></BspeDirective>
+		attribute 	: <div BspeDirective=""></div>
+		class		: <div class="BspeDirective"></div>
+		comment		: <!-- directive: BspeDirective -->
+		
+-> Restrictions
+	* restrict your directives to only be invoked by some of the methods
+
+----------------------------------------------------- 30-8-2017 ---------------------------------------------------------	
+6)------------------------------------------------ AngularJS Model ------------------------------------------------------
+=> ng-model Directive
+	-> with the ng-model directive you can bind the value of an input field to a variable created in AngularJS
+	
+=> Two-way binding
+	-> It uses mg-model
+=> Validate use input	
+	-> validate : email
+	ex: <span ng-show="formName.inputName.$error.email"> error Message </span>
+----------------------------------------------------- 1-9-2017 ----------------------------------------------------------
+7)------------------------------------------------ AngularJS Data Binding -----------------------------------------------
+=> Data model	
+	-> It is a collection of data available for the application
+	
+=> Html view
+	-> html container where the angularJS application is displayed, is call view 
+	
+=> The ng-model Directive
+	-> It is used to bind data from the model to the view on the Html controls(input,select, textarea)
+	
+=> Two-way binding
+	-> It is the synchronization between the model and the view
+	
+=> AngularJS controller
+	-> Applications in the angularJS are controled by Controllers
+	
+8)------------------------------------------------ AngularJS controllers ------------------------------------------------
+=> AngularJS controller
+	-> controller is a JavaScript Object, created by Standerd JavaScript Object Constructor
+	-> angularJS wil invoke the controller with a $scope Object
+	-> $scope is application object (the owner of apllication variables and functions)
+	
+=> controller Method
+=> Controllers in External file
+		-> Copy code between <Script> and add into external file with extension .js  
+		-> ex.     myControllers.js
+		-> attache it on our page using <script src="myControllers.js"></script>
+		-> Example with store angularJS controller store in another controller
+		
+9)------------------------------------------------ AngularJS Scope -------------------------------------------------------
+=> AngularJS Scope
+	-> It is the binding part between the HTML(View) and the JavaScript(controller)
+	-> It is JavaScript Object with the available properties and methods
+	-> It Available for both the view and the controller
+	
+=> how to use scope
+	-> when you make controler in AngularJS, pass the $scope object as an argument
+	
+=> understanding the Scope
+	-> Model, which is Html
+	-> View, data available for the current view
+	-> Controller, which is javascript function that makes/changes/removes/controls the data
+	
+	-> then scope is the Model
+=> Know your scope
+	-> In large application there can be section in the Html DOM which can only access certain scopes
+	
+=> Root Scope	
+	-> Controlle's color variabale dose not overwrite the rootScope's color value
+
+10)------------------------------------------------ AngularJS Filters -------------------------------------------------
+=> AngularJS filters
+	-> currency, date, filter, json, limitTo, lowercase, uppercase, orderBy, number
+=> Adding filter to Expressions
+	-> ex.   <p> Name : {{name | lowercase}} </p>
+=> Adding filter to Directive
+=> Currency filter
+=> The filter Filter	
+	-> Filter only appy on array or list type not in string type
+=> Filter an array based on your input
+=> Sort an array based on your input
+----------------------------------------------------- 4-9-2017 --------------------------------------------------------
+=> Make your own filters
+	-> var myApp = angular.module('myApp',[]);
+	-> myApp.filter('myCustomFilter',function(){
+		return function(x){
+		---- logic code ---
+		return value
+		};
+	   });
+
+11)------------------------------------------------ AngularJS Services ------------------------------------------------
+=> what is service
+	
+------------------------------------------------------- 7-9-2017 ------------------------------------------------------
+=> Why use service	
+=> Services
+	1) $location 
+		-> used insted of window.location
+		-> used to get current page link or nevigate to page
+		
+	2) $http
+		-> to get page source of specified page which is in the project
+		
+	3) $timeout 
+		-> used insted of window.SetTimeout function
+		-> after specified time it will change text 
+	4) $interval
+		-> after specified time text will changed continually
+=> Create your own service	
+-> In jquery convert number to hexcode 
+	-> number.toString(16)
+=> Custom service inside Filter
+
+11)================================================ AngularJS Http ===================================================
+------------------------------------------------------- 8-9-2017 -----------------------------------------------------
+=> AngularJS $http 
+	-> It is used to reading data from remote servers
+	
+=> Methods
+	-> .get() , .post(), .delete() , .put(), .head , .jsonp() , .patch()
+
+=> Properties of Respose object
+	-> .data , .status , .statusText , .header , .config
+	
+-> To handle erros, add one more function to the  $http.get("Path").then(SucessFunction, ErrorFunction)
+
+=> JSON
+	-> The data you get from the response is expected to be in json formate,
+	-> json is great wat to trasporting data
+	
+12)=============================================== AngularJS Tables ===================================================	
+=> Displaying data in table
+=> Displaying with css style
+=> Displaying with orderBy filter
+=> Displaying with uppercase filter
+=> Displaying the table Index ($index) 	
+	-> in design page use -> {{$index +1}}
+	-> where "1" is start index from
+	-> ex. 	{{$index +1}} ->  Output: 1,2,3,4,...
+			{{$index +5}} ->  Output: 5,6,7,8,...
+			{{$index +35}} ->  Output: 35,36,37,38,...
+=> Using $even and $odd with style for display column with different color look
+	
+13)=============================================== AngularJS Select ===================================================	
+=> Creating s Select Box using "ng-options"
+	-> It is use to generate DropDownList
+=> Home work : How to make Custome DropdownList using AngularJS with "ng-options"	
+=> ng-options vs ng-repeat
+	
+	-> "ng-repeat" directive repeats a block of HTML code for each item in an array
+	-> ex : ng-repeat="car in Cars"
+	-> it can be used to create options in a dropdown list
+	
+	-> "ng-options" directive was made especially for filling a dropdown list with options
+	-> ex : ng-options="car.Name for car in Cars"
+	-> It has advantage : Dropdowns made with ng-options allows the selected value to be an object
+	
+	-> where dropdowns made from ng-repeat has to be a string.
+	
+=> What do i use ?	
+	-> The "ng-repeat" directive has its limitations, the selected value must be a string
+	-> When using the "ng-options" directive, the selected value can be an object
+	-> When the selected value can be an object, it can hold more information, and your application can be more flexible.
+
+=> The Data Source as an Object	
+	-> In the previous examples the data source was an array, but we can also use an object
+	-> ex : ng-options="x for (x,y) in Cars"
+	-> Using an object as the data source, x represents the key, and y represents the value
+	-> The selected value will always be the value in a key-value pair
+	-> The value in a key-value pair can also be an object
+	
+------------------------------------------------------ 9-9-2017 --------------------------------------------------------
+14)================================================= AngularJS SQL =====================================================	
+=> Fetching Data from a PHP Server Running MySql
+	-> fetch data using $http.get("customers_Mysql.php").then(successFunction, errorFunction); method
+	
+=> Fetching Data from a Asp.net Server Running SQL
+	-> fetch data using $http.get("customers_Sql.aspx").then(successFunction, errorFunction); method
+	
+=> Server Code Examples
+	-> the following section is listing a Server code used to fetch SQL deta
+	1) Using PHP and MySQL. Returning JSON.
+	2) Using PHP and MS Access. Returning JSON.
+	3) Using ASP.NET, VB, and MS Access. Returning JSON.
+	4) Using ASP.NET, Razor, and SQL Lite. Returning JSON.
+	
+=> Cross site HTTP Requests	
+	1) Server Code PHP and MySql
+	2) Server code PHP and MsAccess
+	3) Server code ASP.Net, VB and MsAccess
+	4) Server code ASP.Net, Razor C# and SQL Lite
+	
+15)================================================= AngularJS DOM =====================================================
+=> ng-disabled Directive	
+	-> It is used to dishable button or any input
+	-> ex. ng-disabled="true"
+	
+=> ng-show Directive
+	-> It is use to show and hide html element
+	-> ng-show="true"   -> shows element
+	-> ng-show="false"  -> hide element
+	-> The ng-show directive shows (or hides) an HTML element based on the value of ng-show.
+	-> You can use any expression that evaluates to true or false
+		ex.  <div ng-app="" ng-init="count=20">
+				<p mg-show="count > 15">I am show</p>
+			</div>
+			
+=> ng-hide Directive	
+	-> It also check condition for true and false to hide element
+
+16)================================================= AngularJS Event =====================================================
+=> AngularJs Event
+=> ng-blue, ng-focus, ng-change, 
+	ng-click, ng,dblclick,
+	ng-copy, ng-cut, ng-paste
+	ng-keypress, ng-keup, ng-keydown,
+	ng-mouseup, ng-mousedown, ng-mouseenter, ng-mouseover, ng-mousemove, ng-mouseleave
+
+=> Mouse Event	
+	-> mouse curson move events : ng-mouseenter, ng-mouseleave, ng-mouseover, ng-mouseout, ng-mousemove
+	-> mouse click events : ng-click, ng-mousedown, mg-mouseup
+
+	-> mouseenter event only triggers when the mouse pointer enters the selected element.
+	-> The mouseover event is triggered if a mouse pointer enters any child elements as well.
+	-> To better understand ng-mouseover and ng-mouseenter : https://bl.ocks.org/mbostock/5247027
+	
+=> Toggle, True/false
+	-> Initialy ->  $scope.showMe = false;
+	-> after click -> call function -> in function -> $scope.showMe = !$scope.showMe
+	
+17)================================================= AngularJS Forms =====================================================	
+-> forms in angularJS provide databinding and validation on input controls
+
+=> Input controls
+	-> input element
+	-> select element
+	-> button element 
+	-> textarea element
+
+=> data binding	
+=> CheckBox	
+
+=> two ng-app in one body part : https://stackoverflow.com/questions/18571301/angularjs-multiple-ng-app-within-a-page
+	-> to bind second ng-app data must add below line at last in script 
+	-> line : angular.bootstrap(document.getElementById("2nd ng-app DivId"),['2nd ng-app Name']);
+
+	=> RadioButton
+	-> Based on selected topic, we can switch display content of topic
+	
+=> Note : If If you don't want to use controller in js then don't specify in the ng-app	
+
+=> SelectBox (DropDownList)
+=> An AngularJS Form Example 
+	-> <form novalidation>
+		</form>
+	-> in above novalidation attribute is used to override standerd HTML5 validations
+
+------------------------------------------------------ 13-9-2017 --------------------------------------------------------
+18)============================================= AngularJS Validation =====================================================
+=> Form Validation
+	-> required
+	-> email
+	
+=> form state and input state
+	-> $pristine No fields have been modified yet
+	-> $dirty One or more have been modified
+	-> $invalid The form content is not valid
+	-> $valid The form content is valid
+	-> $submitted The form is submitted
+	
+=> CSS Classes
+	-> The following classes are added to, or removed from, input fields:
+		-> ng-untouched The field has not been touched yet
+		-> ng-touched The field has been touched
+		-> ng-pristine The field has not been  modified yet
+		-> ng-dirty The field has been modified
+		-> ng-valid The field content is valid
+		-> ng-invalid The field content is not valid
+		-> ng-valid-key One key for each validation. Example: ng-valid-required, useful when there are more than one thing that must be validated
+		-> ng-invalid-key Example: ng-invalid-required
+
+	-> The following classes are added to, or removed from, forms:
+		-> ng-pristine No fields has not been modified yet
+		-> ng-dirty One or more fields has been modified
+		-> ng-valid The form content is valid
+		-> ng-invalid The form content is not valid
+		-> ng-valid-key One key for each validation. Example: ng-valid-required, useful when there are more than one thing that must be validated
+		-> ng-invalid-key Example: ng-invalid-required
+		
+=> Create custom validation		
+
+19)============================================= AngularJS API =====================================================		
+=> AngularJS Global API
+	-> It is set of JavaScript Functions for performing common task
+	-> like: Comparing Objects, Converting data and Iterating objects
+	-> It is accessed using angular object
+	-> common API functions : angular.lowercase(data) , angular.uppercase(data) , angular.isNumber(data) and angular.isString(data)
+
+	
+
+				
+				

@@ -1,0 +1,21 @@
+======================= B.spe.~ EPFO Notes ===========================
+--------------------- Registration for EPFO---------------------------
+https://unifiedportal-mem.epfindia.gov.in/memberinterface/
+-> below sign in part 
+-> click on Active UAN
+-> enter detail
+-> get OTP on mobile
+-> enter OTP
+-> get message of password
+-> Tour UserId is your UAN number
+
+--------------------- download passbook detail ------------------------
+http://www.epfindia.com/site_en/
+-> click on our Service
+-> Select for Employees
+-> In service part 
+-> Click member passbook 
+-> Login page 
+-> enter user name and password
+-> click on ceter location button 
+-> pdf will automaticaly start to download

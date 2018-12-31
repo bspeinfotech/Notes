@@ -1,0 +1,1439 @@
+﻿=============================================== Remote to another PC =================================================
+S-1) win R
+S-2) type -> mstsc
+S-3) type -> 10.0.10.31
+S-4) Select user
+	 OR
+	 another user : write usename and password
+
+=================================================== c# 7 features ====================================================
+Link : https://www.codeproject.com/Articles/1131035/New-Features-of-Csharp
+1) Tuples (with types and literals) -> method return multiple values
+2) Record Type -> 
+3) Minimizing OUT -> not need to declare out parameter variable
+4) Non-'NULL' able reference type -> 
+5) Local Methods/Functions
+6) Readability Improvement with Literals(constant or hardcoded value) -> literals with binary
+7) Pattern matching
+8) 'return' by Ref -> we can return reference 
+	example : ref string strSubstitute = ref getFromList("b", values);
+9) Throw Exception from Expression -> throw exception instant when it generate
+	example :  return (empArr.Length > 0) ? empArr[0] : throw new Exception("Emp Info Not exist");
+	
+=================================================== Notes Sql Server =================================================	
+-> In sql query
+	-> SELECT VariantProductID FROM tb_ProductvariantValue WHERE VariantValueID in (SELECT ValueId FROM tb_CartLogoPerson WHERE  CustomCartId = 20
+	
+-> Datatype : "varcar" uses ASCII data 
+	-> ASCII data uses 7bit(1byt) 
+	
+-> Datatype : "nvarcar" uses unicode data
+	-> unicode data uses 16bit(2bytes)
+	-> nvarcar used when encoding is including
+	
+-> Datatypes : "Money", "numeric", "decimal"
+	-> can't multiply or dividing money by money
+	-> multiply/dividing money by scalars   ,output : decimal
+	-> MONEY need 8 Byte and NUMERICAL(19,4) need 9 Byte (12,5% bigger) , so money is faster than numeric
+	-> decimal need 16 Bytes
+	-> MONEY is one byte less than a large DECIMAL
+	-> guide link : https://stackoverflow.com/questions/582797/should-you-choose-the-money-or-decimalx-y-datatypes-in-sql-server
+	
+-> Datatype : "varbinary" 
+	-> store anything	
+	-> 		declare @t table (id int identity, pwd varbinary(50))
+	-> A varbinary column usually stores a hash of some kind. For example, a SHA1 hash using the HashBytes function:
+	-> 		insert into @t (pwd) values (HashBytes('sha1', 'secret'));
+
+-> Datatype : "uniqueidentifier"	
+	-> guide link : https://docs.microsoft.com/en-us/sql/t-sql/data-types/uniqueidentifier-transact-sql
+	-> initialized to a value :	
+		-> By using the NEWID function.
+		-> By converting from a string constant in the form xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx, in which each x is a hexadecimal digit in the range 0-9 or a-f. For example, 6F9619FF-8B86-D011-B42D-00C04FC964FF is a valid uniqueidentifier value.
+	
+	-> Comparison operators can be used with uniqueidentifier values. However, ordering is not implemented by comparing the bit patterns of the two values. The only operations that can be performed against a uniqueidentifier value are comparisons (=, <>, <, >, <=, >=) and checking for NULL (IS NULL and IS NOT NULL). No other arithmetic operators can be used. All column constraints and properties, except IDENTITY, can be used on the uniqueidentifier data type.
+	
+	-> Merge replication and transactional replication with updating subscriptions use uniqueidentifier columns to guarantee that rows are uniquely identified across multiple copies of the table.
+	
+-> Merge replication : 
+	-> Merge replication is a feature offered by Microsoft SQL Servers
+	-> that allows changes to be sent from one primary server, called a publisher, to one or more secondary servers, called subscribers.
+	
+-> 	transactional replication : 
+	-> Transactional replication is the automated periodic distribution of changes between databases.
+	-> Data is copied in (or near) real-time from the primary server (publisher) to the receiving database (subscriber). Thus, transactional replication offers an excellent backup for frequent, daily databases changes.
+
+-> Datatype  : "ntext"
+	-> it is removed in a future version of SQL Server
+	
+-> Keys in RDBMS
+	-> Primary Key
+	-> Unique Key
+	-> foreign key	
+	-> candidate key
+	-> alternate key
+	-> composite key
+	
+	-> guide link : http://www.crazyforcode.com/keys-rdbms/
+ 	
+-> A table can only have one primary key, wich is not null	
+-> A table can have multiple candidate keys, wich are not null, Each Candidate Key can qualify as Primary Key	
+-> we can use composite key alter to candidate key	
+
+-> CASE Expression in SqlServer : 
+	-> example : DECLARE @intInput INT
+				 SET @intInput = 2
+				 SELECT CASE(@intInput) WHEN 1 THEN 'One' WHEN 2 THEN 'Two' _
+				 		WHEN 3 THEN 'Three' ELSE 'Your message.' END 
+
+-> How to split string and select all splited string in SqlServer
+	-> Query : CREATE FUNCTION [dbo].[SplitString]
+					(    
+						@Input NVARCHAR(MAX),
+						@Character CHAR(1)
+					)
+					RETURNS @Output TABLE (
+						Item NVARCHAR(1000)
+					)
+					AS
+					BEGIN
+						DECLARE @StartIndex INT, @EndIndex INT
+					
+						SET @StartIndex = 1
+						IF SUBSTRING(@Input, LEN(@Input) - 1, LEN(@Input)) <> @Character
+						BEGIN
+								SET @Input = @Input + @Character
+						END
+					
+						WHILE CHARINDEX(@Character, @Input) > 0
+						BEGIN
+								SET @EndIndex = CHARINDEX(@Character, @Input)
+							
+								INSERT INTO @Output(Item)
+								SELECT SUBSTRING(@Input, @StartIndex, @EndIndex - 1)
+							
+								SET @Input = SUBSTRING(@Input, @EndIndex + 1, LEN(@Input))
+						END
+					
+						RETURN
+					END 
+					
+	-> Query : SELECT Item FROM dbo.SplitString('BHAVESH,HITEN,HARSHIT,KARAN,NIKUNJ,DJ,MANAV', ',')	
+
+	
+						
+================================================== Notes Design(jQuery) ================================================
+-> Backstretch in jQuery: Backstretch is a jQuery plugin that allows you to add a dynamically-resized background image to any page. The image will stretch to fit the page, and will automatically resize as the window size changes.						
+
+==================================================== C# coding Note ====================================================
+-> DataView : DataView means view of data available in DataSet...(view of table available in DataSet) it is used to find a record, sort, filter the record... by using DataView.
+
+-> what is the difference between eval and databinder.eval in c# ?
+	-> expresions : -> Container.DataItem("Property")
+					-> Databinder.Eval(Container.DataItem, "Property")
+					-> Eval("Property")
+					-> Bind("Property")
+					
+	-> Disription : -> Eval is one-way binding.
+				    -> Bind is for two way binding. 
+	                -> Using Eval allows you to get the content into your page, but ASP.Net will not be able to put it back into an object for you.
+				    -> The Eval method is just shorthand for DataBinder.Eval. 
+				    -> Also, Container.DataItem("Property") is effectively the same as the Eval method except for when you want to return the value of a "path". 
+				    -> For instance you can call Eval with a dot-separated "path" to a public property that you want the value of, but I do not believe you can do this with Container.DataItem("Property").
+	-> guide links : https://stackoverflow.com/questions/1178863/whats-the-difference-between-databinder-eval-and-container-dataitem
+					 https://forums.asp.net/t/984156.aspx?DataBinder+Eval+vs+Eval
+					 https://weblogs.asp.net/rajbk/Contents/Item/Display/1125
+					 https://www.aspsnippets.com/Articles/Difference-between-Eval-and-Bind-functions-in-ASPNet.aspx
+					 
+-> Literal control in Asp.net/rajbk/Contents/Item/Display/1125
+	-> The Literal control is used to display text; that is, it renders static text on a Web page without adding additional HTML tags. It passes content directly to the client browser unless you use the Mode property to encode the content.
+	-> guide link : http://www.c-sharpcorner.com/UploadFile/puranindia/literal-control-in-Asp-Net/
+	
+-> Difference between Label and Literal control in ASP.Net
+	-> guide link : https://www.aspsnippets.com/Articles/Difference-between-Label-and-Literal-control-in-ASPNet.aspx
+	
+-> Timer control in asp.net
+	-> to start and stop events
+	
+-> SortedList class object
+	-> The SortedList<> class represents a collection of key/value pairs that are sorted by key.
+	-> The hierarchy of SortedList is System.Collections.Generic.SortedList<TKey, TValue>, where Tkey is the type of keys in the collection and Tvalue is the type of values in the collection.
+	
+-> WebBrowser control in asp.net
+	-> built-in browser methods : go home, forward, backward, refresh, save, print and others
+	-> guide link : http://www.c-sharpcorner.com/UploadFile/mahesh/webbrowser-control-in-C-Sharp-and-windows-forms/
+
+----------------------------------------------------- 21-8-2017 -------------------------------------------------------	
+-> Select distinct using 'DISTINCT' keyword in sql	
+
+-> Select unstored data as a data in sql
+	->  SELECT 'Men' as Name, 0 as Displayorder
+		UNION
+		SELECT 'Women' as Name, 1 as Displayorder Order By Displayorder
+
+-> difference between 'UNION' and 'UNION ALL'
+	-> 'UNION' removes duplicate(where all columns in the result are the same),
+	-> 'UNION ALL' don't remove duplicate
+	
+-> WITH statement in sql server
+	-> WITH Employee AS (SELECT * FROM tb_Employees)
+	   SELECT * FROM Employee where id>3
+	   UNION ALL
+	   SELECT * FROM Employee where City='Rajkot')
+	
+-> AsEnumerable() method in c#
+    -> The DataTable class does not implement either interface, so you must call the AsEnumerable method to use the DataTable as a source in the From clause of a LINQ query. You can also obtain custom, domain-specific operators, such as CopyToDataTable, by returning an IEnumerable<T> object.	
+	
+-> DataRowComparer.Default property of System.Data
+	-> Get only modified rows from table.
+	-> ex : var uniqueRows = dsData.[table][0].AsEnumerable().Distinct(DataRowComparer.Default);
+			DataTable dtUniqueData = uniqueRows.CopyToDataTable();
+	
+-> Immutable & Mutable
+	-> System.StringBuilder is mutable 
+	-> System.String is immutable 
+	
+	-> an immutable object is an object whose state cannot be modified after it is created. This is in contrast to a mutable object, which can be modified after it is created.
+	
+	->	Making strings immutable has many advantages. It provides automatic thread safety, and makes strings behave like an intrinsic type in a simple, effective manner. It also allows for extra efficiencies at runtime (such as allowing effective string interning to reduce resource usage), and has huge security advantages, since it's impossible for an third party API call to change your strings.
+	
+----------------------------------------------------- 22-8-2017 -------------------------------------------------------
+-> 	while loop, for loop, foreach loop
+	-> performance of while loop and for loop are pretty much same
+	-> performance of foreach loop is slower then while loop and for loop
+	-> foreach loop is used for itterating through some collection that implements IEnumerable
+	
+	-> guide link = https://forums.asp.net/t/1041090.aspx?Which+loop+is+better+in+performance+foreach+or+for+or+while+
+	
+-> Shift + f9 = show current key/value  pair
+-> To see changes in variable = select variable and right click -> Add Watch
+
+-> Delegate in c#
+	-> It is similar to function pointer in C or C++
+	-> Using it allows the developer to encapsulate a reference to a method inside  a delegate object 
+	-> The delegate object can then be passed to code which can call the reference method, without know to wich method will be invoked.
+	
+----------------------------------------------------- 23-8-2017 -------------------------------------------------------	
+-> get current UserAgent in c#
+	-> It is used to check user(iphone, blackberry, mobile, windows ce, opera mini, palm)
+	-> ex. Code = Request.UserAgent.ToString();
+		   Output = mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/60.0.3112.101 safari/537.36
+
+-> get current browser name in c#
+	-> Request.Browser.Type;	
+	
+-> browser detail detection in c#
+	-> guide link = https://stackoverflow.com/questions/2221722/browser-detection
+	
+-> History of web browser		   
+		
+-> Web Browsers by year
+	-> Presto (Opera 7+)
+	-> WebKit (Safari, Chrome)
+	-> Gecko (Mozila, Firefox, Netscape 6+, etc)
+	-> Trident (Internet Explorer for windows)
+	-> NetScape Clasic
+	-> Mosaic
+	
+	-> guide link = https://upload.wikimedia.org/wikipedia/commons/5/55/Layout_engine_usage_share-2009-01-07.svg
+	
+-> escape() function in jQuery
+	-> it is used to encode a string
+	-> this function make a string portable, so it can be transmited across any network to any computer that support ASCII chatacters.
+	-> this function encodes specail characters, with exception of : *@-_+./
+
+	-> syntax = escape(string)
+	-> ex. Code = document.write(escape("Need tips? Visit W3Schools!"));
+		   Output = Need%20tips%3F%20Visit%20W3Schools%21
+	
+-> Remove white spaces at the Start and at the end of the string in jQuery
+	-> syntax = $.trim(string)
+	
+-> get browser url in c# 
+	-> location.href
+	
+-> change browser url without page reload or page refresh using JavaScript or jQuery 
+	-> syntax = 
+		-> var obj = { Page: page, Url: url };
+		-> history.pushState(obj,obj.Page,obj.Url)
+	-> ex. = history.pushState(null,'',url)
+	-> guide link = https://www.aspsnippets.com/Articles/HTML5-History-pushState-function-Tutorial-in-JavaScript-and-jQuery-with-example.aspx
+
+-> how to generate url as per selection of fields in facet navigation
+	-> using jQuery find all element and retriew selected items and store it in string with ~(tild) seprated
+		for size, color, type, price, etc.
+	-> encode all serach strings using escape(string) function	
+	
+	-> get sortBy : high-low, low-high, latest, bestsellers
+	
+	-> declare two variable searchName and searchValue
+	
+	-> set searchName(size, color, price, etc.) with ,(comma) seprated
+	-> set searchValue(xs~m~l,red~blue~pink,25~60~30) with ,(comma) seprated
+	
+	-> make new url using domain,searchName, searchValue, categoryId, pageName and sort
+	
+	-> ex. http://localhost:50485/size,type/sd,hats/10556/men-s-.html?sort=low
+		http://localhost:50485/size,type,price/2xl~lt,polo~button%20downs~pullovers,0.00-24.99/10556/men-s-.html?sort=high
+
+	-> In post request pass all data using jQuery	
+		
+	-> in above generate link example
+		-> domain = http://localhost:50485
+		-> searchName = size,type,price
+		-> searchValue = 2xl~lt,polo~button%20downs~pullovers,0.00-24.99
+		-> categoryId = 10556
+		-> pageName = men-s-.html
+		-> sort = high	
+		
+----------------------------------------------------- 24-8-2017 -------------------------------------------------------	
+-> iframe control in ASP.NET
+	-> It is used to display full content of another productVarient.aspx page in current product.aspx page
+	-> syntax => <iframe id="ifrmProductVariaent" runat="server" src="/Admin/products/productVarientsNew/StoreId=5" onload="iframeAutoheight(this);" scrolling="no"  frameborder="0" marginheight="0" marginwidth="0" width="100%" onscroll="myFunction()" ></iframe>
+		
+				 
+-> GridView control in ASP.NET with edit and delete records from .aspx page only
+	-> instant update and delete fron gridview control
+
+	-> to edit perticular row add 'AutoGenerateEditButton="true"' and set 'DataKeyName=""' to the GridView Control
+	-> DataKeyName wiil used in the sql query to edit row detail
+	-> This will add an Edit link button at the beginning of all the rows in the GridView. 
+	-> If i have five column in row and i want to edit only two columns then set 'ReadOnly="true"' in another three columns 
+	
+	-> to delete perticular row add 'AutoGenerateDeleteButto="true"'
+	
+	-> In gridView it use <asp:BoundField> to edit and delete row
+
+	-> to connect with sql server it use
+		<asp:SqlDataSource ID="" runat="server" 
+			Connectionstring="" 
+			SelectCommand="write select query" 
+			UpdateCommand="write update query" 
+			DeleteCommand="write delete query" >
+						
+			<UpdataParameters>
+				<asp:Parameter Name="Id">
+				<asp:Parameter Name="Mobile">
+				<asp:Parameter Name="email">
+			</UpdataParameters>
+			
+			<DeleteParameters>
+				<asp:Parameter Name="Id">
+			</DeleteParameters>
+		
+		</asp:SqlDataSource>
+	
+	-> guide link = http://www.encodedna.com/2013/01/asp.net-gridview-edit-delete.htm      (used BoundField)
+	-> http://www.c-sharpcorner.com/UploadFile/1e050f/edit-and-update-record-in-gridview-in-Asp-Net/   (used TemplateField)
+	
+-> Difference between <asp:boundField> and <asp:templateField> in grid view
+	-> boundField is used to bound data and only display it in gridview
+	-> templateField is used to bound data and display as well as edit data in gridview
+	-> templateField is used when we want to customization in gridView like add button for delete and edit, merge two fields.
+	
+	-> boundField = It is used to display the db columns directly in gridview 
+	-> templateField = If you want to to do something more fancy such as concatenate 2 db columns as a single gridview column or add some extra text/description/para to the grid that may not come from the db.
+	-> EditTemplateField = It is used to edit column data of row in templateField
+	
+	guide link =  https://stackoverflow.com/questions/25106109/difference-between-bound-column-field-and-template-column-field
+	http://www.dotnetfunda.com/interviews/show/7828/what-is-the-difference-between-templatefield-and-boundfield-in-gridvie
+
+----------------------------------------------------- 25-8-2017 -------------------------------------------------------	
+-> HashTable class in asp.net
+	-> It is a collection that stores (key,value) pairs.
+	-> Here, the keys are used to find storage location storage and it is immutable and can not have duplicate value in HashTable.
+	-> Each items within the collection is DictionaryEntry object with two troperties.
+	-> It is defined in System.Collections
+	
+	-> guide link = http://www.c-sharpcorner.com/UploadFile/e83792/C-Sharp-nethash-table-class/
+	
+-> Get screen capture in c#
+	-> Demo available on path = D:\Bhavesh Jadav\Projects\Desktop Applications\ScreenCaptureApplication
+	-> guide link = http://www.c-sharpcorner.com/UploadFile/2d2d83/how-to-capture-a-screen-using-C-Sharp/
+	
+-> Export data in .csv file in c#
+	-> Demo available on path = D:\Bhavesh Jadav\Projects\Desktop Applications\ScreenCaptureApplication
+
+----------------------------------------------------- 26-8-2017 -------------------------------------------------------	
+-> ASCX file in asp.net	c#
+	-> It is Asp.Net Web User Control file
+	-> It make easy to use the same code across multiple asp.net web pages
+	-> It saving time and energy when buiding a website
+	-> It is use fo menu nevigation for each page
+	
+	guide link = https://www.lifewire.com/ascx-file-2619687
+	
+-> DLL file in asp.net c#
+	-> It ClassLibrary project
+	-> DLL stands for Dynamic Link Library
+	-> they not execuatable file but they are support file
+	-> whenever you create class libary and build the project dll files are created
+	-> You can refer this file in your projects bin directory and use them
+	
+-> Use of ddl file in asp.net
+	-> It is used by more than one programe at the same time
+	-> The use of DLLs helps promote modularization of code, code reuse, efficient memory usage, and reduced disk space.
+	-> Also when dll is used the programs will load faster and also run faster than normal codes. 
+	
+	-> guide link = http://aspdotnetcodes.com/ViewQuestion_211.aspx
+	
+-> Difference between .master page and .ascs page in asp.net c#
+	-> .master pages 
+		-> It is suitable for large design
+		-> It provide ContentPlaceHolder to put data of .aspx page, which provide proper layout
+		-> we can resize ContentPlaceHolder as per requirment
+		
+	-> .ascs pages 
+		-> It is suitable for small design
+		-> It do not have any ContentPlaceHolder control, which make some what difficult in providing proper layout
+
+-> Resume facility in desktop application
+	
+----------------------------------------------------- 28-8-2017 -------------------------------------------------------	
+
+-> how to Perform button click event when user press Enter key in Textbox
+	-> guide link = https://stackoverflow.com/questions/5948171/perform-button-click-event-when-user-press-enter-key-in-textbox
+
+----------------------------------------------------- 6-9-2017 -------------------------------------------------------	
+-> How to send mail from asp.net C#
+	-> code =>	MailMessage mail = new MailMessage();
+                SmtpClient smtpServer = new SmtpClient(smtpServer.gmail.com);
+
+                mail.From = new MailAddress("MailAddress of sender");
+                mail.To.Add("SendToAddress1");
+                mail.To.Add("SendToAddress2");
+                mail.Subject = "subject name";
+                mail.Body = "body data";
+                mail.IsBodyHtml = true;  // for allow html formate
+                Attachment attachment = new Attachment("file path");  // if want to attach file
+                mail.Attachments.Add(attachment);
+
+                smtpServer.Port = 25;
+                smtpServer.Credentials = new System.Net.NetworkCredential("Mail Addressof sender", "Password of sender email address");
+                smtpServer.EnableSsl = true;
+
+                smtpServer.Send(mail);
+
+-> SMTP Ports 25,465,587 and 2525
+	–> SMTP port 587 is one of the best choices for nearly every use case for connecting to Pepipost
+	–> Port 25 is the default port used for relaying
+	–> Port 465 should no longer be used at all
+	–> Port 2525 used when all other port is blocked
+
+	-> From 1982 till date, Port 25 is used as the default port to communicate email across the Internet using the SMTP.
+		-> 25 is a common SMTP port and it is used as the primary means of the transmitting mails betweens two mail servers
+	
+	-> 1997 IANA registered 465 for SMTPS
+		-> It was initially planned for the SMTPS encryption and authentication “wrapper” over SMTP
+	
+	> In December of 1998, R. Gellens and J. Klensin submitted RFC 2476
+		-> The RFC defined that Port 587 is reserved for email message submission	
+		-> This will benefit developers and network administrators by making it easy to implement authenticated submission, security policies and guard against unauthorized mail relaying.
+	
+	-> Almost every ESP supports the use of Port 2525, even though this is not an official SMTP port and not endorsed by neither the IETF nor IANA. Port 2525 is used as an alternative to port 587 for SMTP, you can use this port if all the above ports are blocked.
+	
+	-> guide line = https://pepipost.com/25-465-587-2525-choose-the-right-smtp-port/
+
+=> Email validation	
+	var pattern = new RegExp("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*@@(\\.[A-Za-z]{2,})$");
+    var result = pattern.test("string");	
+	
+=> striped  calss 
+	-> ex. <table class="w3-striped">
+	-> It is use to allow even-odd color in table
+	
+=> How to Select image, crop it and display it using jQuery
+	-> guide link : http://www.jqueryscript.net/other/Simple-jQuery-Client-Side-Image-Cropping-Plugin-Awesome-Cropper.html
+	
+=> Screen short of perticular div or element as a image
+	-> attach script : canvas2image.js
+	-> write code in script
+	-> code : html2canvas(document.body, {
+				onrendered: function(canvas) {
+				document.body.appendChild(canvas);
+				}
+			  });
+	-> guide linl : http://html2canvas.hertzen.com/examples.html
+	
+----------------------------------------------------- 19-9-2017 -------------------------------------------------------		
+=> SSL (Secure Socket Layer)
+	-> It is used to secure connection between client and server
+	-> SSL does not provide any security once the data is on server.
+	
+=> UPS = Unintrepted Power Supply
+=> USPS = United State Potal Service
+----------------------------------------------------- 20-9-2017 -------------------------------------------------------
+=> How to invoke alertbox from code behind 
+	RegisterStartupScript(this,this.GetType(),"alertbox","alert('Hello B.spe.~Jadav')",true);
+
+=> <CKEditor:CKEditorControl id=""> </CKEditor:CKEditorControl>	
+	-> It is used to generate source code from tool, like : <strong>,<b>,<p>,..etc
+	
+----------------------------------------------------- 21-9-2017 --------------------------------------------------------
+=> StringArrayConverter Class in C#
+	-> It convert string to array
+	-> ex. 	StringArrayConverter strToArr = new StringArrayConverter();
+			Array myArray = (Array)strToArr.ConvertFrom('bhavesh,karan,hiten');
+
+=> Why use String.concat("str1","str2") insted of + operator in c#
+	-> + operator call String.concat() in behind at compile time,
+	-> But + operator easy for understand and write
+	-> guide link : https://stackoverflow.com/questions/1787696/why-use-string-concat-in-c
+	
+=> File upload code
+	-> front code :
+			<input type="file" id="fuFile">
+			<button id="btnUploadFile" onclick="btnUploadFile_click()">
+	-> back code :	
+				public function btnUploadFile_click(){
+					// check extension of file
+					
+					string fileName = Get.Extention(fuFile.FileName.ToString());
+					string filePath = (Server.MapPath("/Images/"));
+					if(!Directore.Exist(filePath))
+					{
+						Directory.CreateDirectory(filePath);
+					}
+					fufile.SaveAs(filePath + fileName);
+					
+					// file uploaded alert message from backend
+					 Page.ClientScript.RegisterStartupScript(Page.GetType(), "FileMsg", "alert("Only select .png,.jpg files")", true);
+				}		
+				
+=> How to convert from Table of Data into List of Data	
+	-> using System.Linq;
+	-> List<DataRow> list = tableName.AsEnumerable().ToList();
+	-> It support in .NET 3.5
+
+=> What is the difference between != and <> in Sql Server	
+	-> <> is defined in the ANSI 99 SQL standard and != is not. 
+	-> So not all DB engines may support it and if you want to generate portable code I recommend using <>.
+	
+=> int.Parse() method in c#
+	-> based on .NET 4.7 (2017)
+	-> It will throw exception when incorrect input
+	-> ex.1 // Convert string to number.
+			string text = "500";
+			int num = int.Parse(text);
+			Console.WriteLine(num);
+			
+			output = 500	
+	 		Errors. The int.Parse method is strict. With an invalid string, it throws a FormatException. We can catch this using a try-catch construct.	
+	
+	-> EX.2 string input = "carrot";
+			// ... This will throw an exception.
+			int carrots = int.Parse(input);
+			Console.WriteLine(carrots);
+			
+			output = 	Unhandled Exception: System.FormatException:
+						Input string was not in a correct format.
+						at System.Number.StringToNumber(String str, NumberStyles options, ...
+						at System.Number.ParseInt32(String s, NumberStyles style, ...
+	
+=> int.TryPass() method in C#
+	-> Using the int.TryParse method is usually a better solution. TryParse is faster.
+	-> It does not throw exceptions.
+	-> ex1. string text1 = "x";
+			int num1;
+			bool res = int.TryParse(text1, out num1);
+			if (res == false)
+			{
+				// String is not a number.
+			}
+	
+			// Use int.TryParse on a valid numeric string.
+			string text2 = "10000";
+			int num2;
+			if (int.TryParse(text2, out num2))
+			{
+				// It was assigned.
+			}
+	
+			// Display both results.
+			Console.WriteLine(num1);
+			Console.WriteLine(num2);
+			
+			output = 0
+					 10000
+					 
+	-> note = TryParse notes. We must use out before the second argument in int.TryParse. With "out", the compiler can help you make sure your variables are always in a valid state.	
+
+=> guide link for int.Parse() and int.TryParse() methods : https://www.dotnetperls.com/parse	
+
+=> Math.Seiling(number);
+	-> rounds up to the next full integer.
+	-> ex. double ceiling1 = Math.Ceiling('123.456');
+			output : 124
+			
+=> Paging in gridView
+	-> Note : variable starts with ltr are ids of Literal, which have empty text		
+	-> ex. 	try
+			{
+				if(numberOfRecords > 0)
+				{
+					int pageSize = 25;
+					int numberOfRecords = 600;
+					int currebtPage = 0;
+					int numberOfPages = 0;
+					
+					if(numberOfPages > pageSize)
+						numberOfPages = (int)Math.Ceiling((double)numberOfRecords/(double)pageSize);
+					else
+						numberOfPages = 1;
+							
+					ltrPages.Text = numberOfPages;
+					hdnPages.Text = numberOfPages;	
+					
+					string ltrPrevious = String.empty;
+					string ltrNext = String.empty;
+					
+					// to show previous page button
+					if(Convert.ToInt32(txtPageNumber.Text.ToString()) > 1 && Convert.ToInt32(txtPageNumber.Text.ToString()) <= Convert.ToInt32(hdnpages.Value.ToString()))
+						ltrPrevious.Text = "<a title=\"Previous\" href=\"javascript:void(0)\" onclick=\"javascript:chkHeight(); document.getElementById('"+ btnPrevious.ClientID.ToString()+"').click();\"><img title=\"\" alt=\"\" src=\"/App_Themes/" + this.Theme.ToString() + "/assets/img/previous.png\"></a>";
+					
+					// to show next page button
+					if (Convert.ToInt32(hdnpages.Value.ToString()) > Convert.ToInt32(txtPageNumber.Text.ToString()))
+						ltrNext.Text = "<a title=\"Previous\" href=\"javascript:void(0)\" onclick=\"javascript:chkHeight(); document.getElementById('" + btnNext.ClientID.ToString() + "').click();\"><img title=\"\" alt=\"\" src=\"/App_Themes/" + this.Theme.ToString() + "/assets/img/previous.png\"></a>";
+				}
+				else
+				{
+					ltrPages.Text = "1";
+					hdnpages.Value = "1";
+					ltrRecord.Text = "0";
+					ltrNext.Text = "";
+					ltrPrevious.Text = "";
+					txtPageNumber.Text = "1";
+				}
+			}
+			catch(Exeption ex)
+			{
+			}
+			
+=> Convert Datatable to List<Object>	
+	-> guide link = https://stackoverflow.com/questions/12834059/how-to-convert-datatable-to-object-type-list-in-c-sharp
+			
+			
+=> Filter data Table from another data table using SqlServer
+	-> guide link = https://stackoverflow.com/questions/18862004/sql-query-to-filter-a-table-using-another-table
+		
+=> VLOOKUP (filter data)
+	-> =VLOOKUP(A2,$E$2:$J$287483,1,FALSE)
+		
+=> Read data from .csv file
+	-> code : string[] arr_Records = null;
+			StreamReader sr = new StreamReader(fileUpload.FileName);
+			while (!sr.EndOfStream)
+			{
+				arr_Records = sr.ReadToEnd().Split(new[] { "\r\n" }, StringSplitOptions.None);
+			}
+
+----------------------------------------------------- 13-10-2017 --------------------------------------------------------
+=> Save uploaded file in server
+	-> fileUpload.SaveAs(Server.MapPath("/folderName/") + StrFileName);
+
+=> Scroll div as per iframe hight
+	->  ifrmInventoryManagement.Attributes.Add("onload", "iframeAutoheight(this);");
+
+=> Convert type in SQL Server	
+	-> Convert Number to varchar : cast(@Number as varcahr(10))
+
+=> != is also used as <>
+	-> In sql server use not equal <> insted of !=
+	-> ex. use (a<>0) insted of (a!=0)
+
+=> Case in sql server
+	-> case when isnull(Gender,0) LIKE ''%1%'' then ''Youth''  		
+			when isnull(Gender,0) LIKE ''%2%'' then ''Mens'' 
+			when isnull(Gender,0) LIKE ''%3%'' then ''Womens'' 
+			when isnull(Gender,0) LIKE ''%4%'' then ''Unisex'' 
+			else '''' end  Gender
+	
+=> difference between string and String in C#
+
+=> How to Insert multiple records in table using pass table as parameter in Stored Procedure
+	ex. Pro.:Redtag, Page:ImportProduct
+
+=> SET NOCOUNT in StoredProcedure
+	-> When SET NOCOUNT is ON, the count (indicating the number of rows affected by a Transact-SQL statement) is not returned.
+	-> When SET NOCOUNT is OFF, the count is returned. It is used with any SELECT, INSERT, UPDATE, DELETE statement.
+	-> The setting of SET NOCOUNT is set at execute or run time and not at parse time.
+	-> SET NOCOUNT ON improves stored procedure (SP) performance.
+	-> Syntax: SET NOCOUNT { ON | OFF }
+	-> guide link : https://stackoverflow.com/questions/1483732/set-nocount-on-usage
+
+=> NOLOCK in Sql Server
+	-> NOLOCK means avoiding / hiding the root cause of the problem(s)
+	-> If you have performance problems (example: blocked processes, deadlocks) then the solution is to optimize (ex. indexing, query rewriting) T-SQL source code.
+	-> ex. SELECT * FROM tableName WITH (NOLOCK) WHERE Name = 'Bhavesh'
+	
+	-> You can set this at the query level
+	-> ex. SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+		-> Like NOLOCK, this allows for dirty reads.
+		
+	-> guide link : https://stackoverflow.com/questions/20620934/how-to-put-no-lock-for-stored-procedure-t-sql-for-all-tables	
+
+=> what is difference between CHAR, VARCHAR and NVARCAHR datatypes	
+	
+=> CURSOR in Sql Server
+	-> What is the use of cursor?
+		-> Cursor might used for retrieving data row by row basis. its act like a looping statement(ie while or for loop). 
+		 
+		-> To use cursors in SQL procedures, you need to do the following:
+			1.Declare a cursor that defines a result set. 
+			2.Open the cursor to establish the result set. 
+			3.Fetch the data into local variables as needed from the cursor, one row at a time. 
+			4.Close the cursor when done.
+	
+	-> Ex. 	DECLARE @Table Table
+			(
+				Name varchar(max),
+				City	varchar(max)
+			)
+			
+			INSERT INTO @Table values('bhavesh','rajkot')
+			INSERT INTO @Table values('hiten','Junagadh')
+			
+			DECLARE @Name varchar(max)
+			DECLARE @City varchar(max)
+			
+			DECLARE cur CURSOR FOR select Name,City from @Table
+			
+			open cur
+			
+			fetch next from cur into @Name, @City
+			
+			while @@fetch_status = 0
+			begin
+				-- print 'Name:' + @Name + '  City:' +@City
+				print @Name
+				print @City
+				
+				fetch next from cur into @Name, @City
+			end
+			
+			close cur
+			deallocate cur
+		
+	-> guide link = https://stackoverflow.com/questions/4222868/what-is-exact-use-of-cursor-in-sql-server
+	
+----------------------------------------------------- 23-10-2017 --------------------------------------------------------	
+=> Trigger in Sql
+	-> A trigger is a special kind of stored procedure that automatically executes when an event occurs in the database server. 
+	-> DML triggers execute when a user tries to modify data through a data manipulation language (DML) event. 
+	-> DML events are INSERT, UPDATE, or DELETE statements on a table or view.
+	
+=> Date picker (simple) : https://jqueryui.com/datepicker/	
+=> Date and time picker : https://eonasdan.github.io/bootstrap-datetimepicker/Installing/
+	
+=> STUFF in Sql server
+	-> SELECT SS.SEC_NAME,		
+				STUFF((SELECT '; ' + US.USR_NAME 
+				FROM USRS US
+				WHERE US.SEC_ID = SS.SEC_ID
+				FOR XML PATH('')), 1, 1, '') [SECTORS/USERS]
+		FROM SALES_SECTORS SS
+		GROUP BY SS.SEC_ID, SS.SEC_NAME
+		ORDER BY 1
+	
+	-> guide link : https://www.mssqltips.com/sqlservertip/2914/rolling-up-multiple-rows-into-a-single-row-and-column-for-sql-server-data/
+	
+----------------------------------------------------- 25-10-2017 --------------------------------------------------------	
+=> 	Asp.net WebAPI with connection to SqlServer
+	-> guide link : http://www.c-sharpcorner.com/article/asp-net-web-api-and-sql-server/
+	
+----------------------------------------------------- 26-10-2017 --------------------------------------------------------	
+=> Get Custome data using StoredProcedure, WebAPi and Entity Framework
+	-> guide link : https://www.codeproject.com/Articles/805369/Using-an-Entity-Framework-Designer-for-Stored-Proc
+	
+----------------------------------------------------- 27-10-2017 --------------------------------------------------------	
+=> Apply Pie Chart
+	-> guide link : https://www.amcharts.com/demos/simple-pie-chart/
+	
+	
+=> Memory Management 
+	-> Always create object with new to allocate new memory, it helps to collect less garbage collections	
+	
+----------------------------------------------------- 31-10-2017 --------------------------------------------------------	
+=> What are RESTful services
+=> Difference between WCF and Web API. When to choose one over the other?	
+	
+----------------------------------------------------- 07-11-2017 --------------------------------------------------------
+
+=> WebCache.Set(string key, object value, int MinuteToCashe, bool slidingexpiration) method
+	-> It is used to store data in cash memory with or without user defined time
+	-> namespace : System.Web.Helpers
+	-> Parameters
+		1) key
+			Type: System.String
+			The identifier for the cache item.
+		2) value
+			Type: System.Object
+			The data to insert into the cache.
+		3) minutesToCache
+			Type: System.Int32
+			Optional. The number of minutes to keep an item in the cache. The default is 20.
+		4) slidingExpiration
+			Type: System.Boolean
+			Optional. true to indicate that the cache item expiration is reset each time the item is accessed, or false to indicate that the expiration is based the absolute time since the item was added to the cache. The default is true. In that case, if you also use the default value for the minutesToCache parameter, a cached item expires 20 minutes after it was last accessed.
+	-> ex. : System.Web.Helpers.WebCache.Set("dsfacetSearchdatasports", dsfacetSearchdatasports, 720, false);
+	
+=> WebCache.Get(key)
+	-> ex. : System.Web.Helpers.WebCache.Get("dsfacetSearchdatasports");
+
+----------------------------------------------------- 09-11-2017 --------------------------------------------------------	
+
+=> ObjectDataSource control in Asp.net
+	-> filter data dirctly from server
+
+=> GridView control in Asp.net
+	-> uses ObjectDataSource control
+	-> OnRowDataBound in GridView
+		-> It is helpful in situations where you need to highlight the GridView rows or cells based on a specific condition
+		-> Guid link => http://www.c-sharpcorner.com/UploadFile/1e050f/rowdatabound-event-in-gridview-in-Asp-Net/
+	
+=> DataList control in Asp.net	
+	
+=> Difference Between Repeater and DataList and GridView	
+	guide link : http://www.dotnettricks.com/learn/aspnet/difference-between-repeater-and-datalist-and-gridview
+
+=> Download file from server to local in C#
+		try
+            {
+                string foldername = string.Empty;
+                foldername = Convert.ToString(CommonComponent.GetScalarCommonData("SELECT ConfigValue FROM tb_AppConfig WHERE StoreID = " + 0 + " AND ConfigName='ProductImportPath'"));
+                string filePath = (System.Web.HttpContext.Current.Server.MapPath(foldername + "ProductCSV/ImportCSV/") + "Test.csv");
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
+
+                if (fileInfo.Exists)
+                {
+                    Context.Response.Clear();
+                    Context.Response.AddHeader("Content-Disposition", "attachment;filename=\"" + fileInfo.Name + "\"");
+                    Context.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                    Context.Response.ContentType = "application/octet-stream";
+                    Context.Response.TransmitFile(fileInfo.FullName);
+                    Context.Response.Flush();
+                }
+                else
+                {
+                    throw new Exception("File not found");
+                }
+            }
+            catch (Exception ex)
+            { }
+
+----------------------------------------------------- 16-11-2017 --------------------------------------------------------
+=> Generating PDF File Using C#
+	guide link : http://www.c-sharpcorner.com/UploadFile/f4f047/generating-pdf-file-using-C-Sharp/
+	
+=> Add Footer in Each Page of pdf-file-using-C-Sharp/
+	guide link : https://www.codeproject.com/Questions/537671/addplusfooterplusforpluseachpluspageplusinplusthep
+	
+=> How to Set two text, one is left and another is right in one line
+
+		Document document = new Document();
+		
+		iTextSharp.text.Table table = new iTextSharp.text.Table(2,1); // First parameter represent columns and second parameter represent rows		
+        table.WidthPercentage = 100;
+        table.Border = 0;
+        table.Padding = 0;
+
+        iTextSharp.text.Cell leftCell = new iTextSharp.text.Cell(new Phrase("Left align text"));
+        leftCell.BorderWidth = 0;
+        leftCell.Border = 0;
+        leftCell.HorizontalAlignment = Element.ALIGN_LEFT;
+        table.AddCell(leftCell);
+
+        iTextSharp.text.Cell rightCell = new iTextSharp.text.Cell(new Phrase("Right align text"));
+        rightCell.BorderWidth = 0;
+        rightCell.Border = 0;
+        rightCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+        table.AddCell(rightCell);
+
+        document.Add(table);
+
+----------------------------------------------------- 24-11-2017 --------------------------------------------------------
+=> Trigger in SqlServer
+	Two Types to perform DML statement(INSERT, UPDATE and DELETE) and DDL statement(CREATE,UPDATE, and DROP)
+	1) INSTEAD OF 
+	2) AFTER
+	
+=> Guide link = 
+	https://www.aspsnippets.com/Articles/Simple-Insert-Update-and-Delete-Triggers-in-SQL-Server-with-example.aspx
+	https://docs.oracle.com/cd/B19306_01/server.102/b14220/triggers.htm
+	
+=> Triggers
+	1) After insert	
+		CREATE TRIGGER [dbo].[tr_After_InsertLogos] 
+		ON [dbo].[tb_Logos]
+		AFTER INSERT 
+		AS
+		BEGIN
+			INSERT INTO SumoCmsByDharmraj.dbo.tb_Logos(Height,Width,ImageId,FaviconImageId) 
+			(select  i.Height,i.Width,i.ImageId,i.FaviconImageId from inserted i)
+		END		
+		
+	2) Before insert (not work now)
+		CREATE TRIGGER [dbo].[tr_Before_InsertLogos] 
+		ON [dbo].[tb_Logos]
+		INSTEAD OF INSERT AS
+		BEGIN
+			INSERT INTO SumoCmsByDharmraj.dbo.tb_Logos(Height,Width,ImageId,FaviconImageId) 
+			(select  i.Height,i.Width,i.ImageId,i.FaviconImageId from inserted i)
+		
+			--select  i.Height,i.Width,i.ImageId,i.FaviconImageId from SumoCmsByDharmraj.dbo.tb_Logos
+		
+			INSERT INTO MyeCommerce.dbo.tb_Logos(Height,Width,ImageId,FaviconImageId) 
+			(select  i.Height,i.Width,i.ImageId,i.FaviconImageId from inserted i)
+		END
+	
+	3) After Update
+		CREATE TRIGGER [dbo].[tr_After_UpdateLogos] 
+		ON [dbo].[tb_Logos]
+		AFTER UPDATE 
+		AS
+		BEGIN
+			UPDATE SumoCmsByDharmraj.dbo.tb_Logos 
+			SET Height=i.Height
+			FROM SumoCmsByDharmraj.dbo.tb_Logos  scd
+			JOIN inserted i 
+			ON i.Height = scd.Height
+			where scd.Height= (SELECT deleted.Height FROM deleted)
+		END
+	
+	4) Before update
+		CREATE TRIGGER [dbo].[tr_Before_UpdateLogos] 
+		ON [dbo].[tb_Logos]
+		INSTEAD OF UPDATE 
+		AS
+		BEGIN
+			UPDATE SumoCmsByDharmraj.dbo.tb_Logos SET Height=(SELECT g=Height FROM inserted) WHERE Height=17
+		END
+		
+	5) After Deleted
+		CREATE TRIGGER [dbo].[tr_After_DeletedLogo]
+		ON [dbo].[tb_Logos]
+		AFTER DELETE
+		AS
+		BEGIN
+			SET NOCOUNT ON;		
+			INSERT INTO SumoCmsByDharmraj.dbo.tb_Logos(ImageId,Remarks) 
+			(SELECT i.LogoId,'Deleted' FROM deleted i)
+		END
+		
+	6) Before Delete
+		CREATE TRIGGER [dbo].[tr_Before_DeletedLogo]
+		ON [dbo].[tb_Logos]
+		INSTEAD OF DELETE
+		AS
+		BEGIN
+			SET NOCOUNT ON;
+			IF(ISNULL((SELECT LogoId FROM DELETED),0) != 0)			
+			BEGIN
+				--DELETE FROM  SumoCmsByDharmraj.dbo.tb_Logos WHERE LogoId=(SELECT LogoId FROM DELETED)
+				INSERT INTO SumoCmsByDharmraj.dbo.tb_Logos(ImageId,Remarks) 
+				(SELECT LogoId,'Deleted' FROM DELETED)
+			END
+			ELSE
+			BEGIN
+				SELECT 'Id not exits..' AS Alert
+			END
+			--SELECT * FROM inserted
+			--SELECT * FROM deleted
+		END
+
+----------------------------------------------------- 27-11-2017 --------------------------------------------------------		
+
+=> Difference between @@IDENTITY, SCOPE-IDENTITY and IDENT_CURRENT (SQl Server)
+	guide link : https://www.codeproject.com/Articles/103610/Difference-between-IDENTITY-SCOPE-IDENTITY-IDENT-C
+	
+	@@IDENTITY
+		It returns the last identity value generated for any table in the current session, across all scopes.	
+		Let me explain this... suppose we create an insert trigger on table which inserts a row in another table with generate an identity column, then @@IDENTITY returns that identity record which is created by trigger.
+	
+	SCOPE_IDENTITY	
+		It returns the last identity value generated for any table in the current session and the current scope.	
+		Let me explain this... suppose we create an insert trigger on table which inserts a row in another table with generate an identity column, then SCOPE_IDENTITY result is not affected but if a trigger or a user defined function is affected on the same table that produced the value returns that identity record then SCOPE_IDENTITY returns that identity record which is created by trigger or a user defined function.	
+
+	IDENT_CURRENT
+		It returns the last identity value generated for a specific table in any session and any scope.	
+		In other words, we can say it is not affected by scope and session, it only depends on a particular table and returns that table related identity value which is generated in any session or scope.
+
+=> Variables scope which are defined within a while block in stored procedures - (SQl Server)
+	-> the variable is *not* re-declared once per loop. It is declared once in this batch.
+
+	->	Ex. SET NOCOUNT ON
+			DECLARE @loop INT
+			SET @loop = 1
+			
+			WHILE @loop <=3
+			BEGIN
+					DECLARE @TestInt INT
+					SET @TestInt = ISNULL(@TestInt,0) + 1
+					SELECT @TestInt
+					SET @loop = @loop +1
+			END
+	
+	->	Output : 1
+				2
+				3
+
+	guide link = https://stackoverflow.com/questions/6045952/variables-scope-which-are-defined-within-a-while-block-in-stored-procedures-sq
+	guide link = http://shaunjstuart.com/archive/2011/05/local-variables-declared-repeatedly/
+
+=> Cursor in Trigger
+	guide link = https://bytes.com/topic/sql-server/answers/792622-cursor-triggers-whats-best-practice
+
+=> Advantage and Disadvantages of cursor (SQl Server)	
+	guide link = https://www.sqlshack.com/using-sql-server-cursors-advantages-and-disadvantages/	
+
+=> Insert Bulk of Data in SqlServer (Using cursor in trigger)
+	-> Trigger
+		CREATE TRIGGER [dbo].[tr_After_InsertLogos] ON [dbo].[tb_Logos]
+		AFTER INSERT AS
+		BEGIN		
+			---- Insert bulk product (simple)
+			--INSERT INTO SumoCmsByDharmraj.dbo.tb_Logos(Height,Width,ImageId,FaviconImageId) 
+			--(select  i.Height,i.Width,i.ImageId,i.FaviconImageId from inserted i)
+		
+			-- Insert bulk product (using cursor)
+			DECLARE cur_Logos CURSOR
+			FOR SELECT Height,Width,ImageId,FaviconImageId FROM inserted
+		
+			OPEN cur_Logos
+		
+			DECLARE @ProductId AS INT, @Height AS INT, @width AS INT, @ImageId AS int, @FaviconId AS int
+		
+			FETCH NEXT FROM cur_Logos into @Height,@width,@ImageId,@FaviconId
+		
+			WHILE @@FETCH_STATUS=0
+			BEGIN
+				INSERT INTO SumoCmsByDharmraj.dbo.tb_Logos(Height,Width,ImageId,FaviconImageId) values(@Height,@width,@ImageId,@FaviconId);
+				FETCH NEXT FROM cur_Logos into @Height,@width,@ImageId,@FaviconId;
+			END
+		
+			CLOSE cur_Logos
+			DEALLOCATE cur_Logos
+		
+		END
+		
+	-- for testing
+	-- insert into tb_Logos(Height,Width,ImageId,FaviconImageId) (select Height,Width,ImageId,FaviconImageId from SumoCmsByDharmraj.dbo.tb_Logos)
+	
+=> Advantage and disadvantage of Triggers	
+	-> Advantages:  
+		- Can take almost any action
+		- Allow complex logic
+		- Can update multiple records at once
+		- Enable developers to update multiple related objects and records
+		- Along with complex logic, you can make future / asynchronous calls
+	
+	-> Disadvantage:
+		- Must be correctly bulkilified
+		- Requires knowledge of apex to maintain and update
+		- Often abused or not written correctly.
+		- On update table data, evry time trigger called, it cause the system to run slow
+			
+	-> guid link = 	https://developer.salesforce.com/forums/?id=906F0000000Ae0tIAC
+					https://www.quora.com/What-are-the-advantages-and-disadvantages-of-using-Database-Triggers
+
+----------------------------------------------------- 07-12-2017 --------------------------------------------------------					
+
+=> User Defined Table Types in SqlServer
+	-> guide link = http://www.c-sharpcorner.com/article/user-defined-table-types-and-table-valued-parameters/
+
+	-> SQL Server now we can pass Table-Valued Parameter to send multiple rows of data to a stored procedure or a function without creating a temporary table or passing so many parameters.	
+	-> Before passing the table variable , first we need to create a user defined table variable. So now we create a user defined table type.
+	
+	
+	-> step 1 : We CREATE THE USER DEFIEND TABLE TYPE for Employee table and structure of Employee table in the following way.
+		-> Create User Define Table Type:
+				
+					CREATE TYPE UT_Employee AS TABLE  
+					(  
+						Emp_Id int NOT NULL,  
+						EmployeeName nvarchar(MAX),  
+						EmpSalary varchar(50),  
+						StateId varchar(50),  
+						CityId varchar(50)  
+					)  
+					
+	-> step 2 : now check User-Defined Tables Type created at : Programmablity > Types > User Defied Table Types > UT_Employee	
+	-> step 3 : Now we declare a stored procedure that has a parameter of table type.
+			   
+			   CREATE PROCEDURE USP_Insert_Employee_Info(@Employee_Details [UT_Employee])  
+				AS  
+				BEGIN  
+				
+				INSERT INTO dbo.Employee  
+				(  
+				Emp_Id,  
+				EmployeeName,  
+				EmpSalary,  
+				StateId,  
+				CityId  
+				)  
+				SELECT * FROM @Employee_Details  
+				END  
+				
+	-> Note : When we try to executethe above query then we get the error of Read Only option, that means Table-valued parameters must be passed as READONLY parameters and we can’t also perform DML operations like UPDATE, DELETE, or INSERT on a table-valued parameter in the body of a routine.
+	-> So add read only right side to TableType 
+				CREATE PROCEDURE USP_Insert_Employee_Infi(@Employee_Details [UT_Employee] ReadOnly)  
+	
+	-> step 6 : Now we create a table type variable and pass this variable to stored procedure as user defined table type parameters.
+				
+				DECLARE @Tab AS [UT_Employee]
+				
+				INSERT INTO @Tab
+				SELECT 1,'Bhavesh','21000','200' UNION All
+				SELECT 2,'Hiten','21000','250' UNION All
+				SELECT 3,'Karan','12000','300' UNION All
+				
+				EXEC DBO.USP_Insert_Employee_Info @Tab
+				
+	-> not data inserted into @Tab		
+
+	=> Update Data:
+	-> step 7 : Create update procedure
+				
+				CREATE PROCEDURE USP_Update_Employee_Info(@Employee_Details [UT_Employee])  
+				AS  
+				BEGIN  
+				
+				UPDATE dbo.Employee  
+				SET								
+					Employee.EmployeeName,  
+					Employee.EmpSalary,  
+					Employee.StateId,  
+					Employee.CityId  				
+					FROM @Employee_Details emp
+					WHERE Employee.Emp_Id = emp.Emp_Id
+				END  
+	
+	-> step 8 : Now we create a table type variable and pass this variable to stored procedure as user defined table type parameter.
+				
+				DECLARE @Tab AS [UT_Employee]
+				
+				INSERT INTO @Tab
+				SELECT 1,'Bhavesh Jadav','21000','200' UNION All
+				SELECT 2,'Hiten Pandya','21000','250' UNION All
+				SELECT 3,'Karan Bavariya','12000','300' UNION All
+				
+				EXEC DBO.USP_Update_Employee_Info @Tab
+				
+	=> Delete Data:
+	-> step 9 : Now we create a stored procedure that accepts a user defined table type and delete the data from table using this user defined table type.
+					
+					// create procedure for delete rows
+					CREATE PROCEDURE USP_Delete_Emloyee_Info(@Employee_Details [UT_Employee1] ReadOnly)
+					AS
+					BEGIN
+						DELETE FROM Employee WHERE Employee.Emp_Id IN (SELECT Emp_Id FROM @Employee_Details)
+					END
+					
+					// Create Table Type for store id which's row will delete
+					CREATE TYPE UT_Employee1
+					(
+						Emp_Id INT
+					)
+					
+					// Declare and inset data on table
+					DECLARE @Tab1 AS UT_Employee1;
+					
+					INSERT INTO @Tab1
+					SELECT 1 UNION ALL
+					SELECT 2 UNION ALL
+					SELECT 3 UNION ALL
+					
+					// Execute query for delete rows
+					EXEC USP_Delete_Emloyee_Info @Tab1;
+					
+----------------------------------------------------- 12-12-2017 --------------------------------------------------------					
+
+=> How To open file dialog on button click	
+			OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                txtFilePath.Text = ofd.FileName;
+            }
+            ofd.Title = "Browse for a file";
+            //ofd.InitialDirectory = @"C:\";
+            ofd.CheckFileExists = true;
+            ofd.CheckPathExists = true;
+            ofd.Filter = "CSV Files(*.csv)|*.csv";
+            ofd.FilterIndex = 2;
+            ofd.RestoreDirectory = true;
+	
+=> Read .csv file data
+			string[] arr_Values = null;
+            StreamReader sr = new StreamReader(txtFilePath.Text);
+            while (!sr.EndOfStream)
+            {
+                arr_Values = sr.ReadToEnd().Split(new[] { "\r\n" }, StringSplitOptions.None);
+            }
+
+=> AxWebBrowser not compatible with Website 
+	-> Go to below paths and follow below steps
+		HKEY_CURRENT_USER\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION
+		HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_BROWSER_EMULATION
+		HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION
+	-> step-1 : New
+	-> step-2 : DWORD (32-bit) Value
+	-> step-3 : Enter Name : UnderArmourUniforms.vshost.exe
+	-> step-4 : Mofify it
+	-> step-5 : Value Data '11000' for Decimal or '2af8' for HexaDecimal
+
+----------------------------------------------------- 20-12-2017 --------------------------------------------------------
+		
+=> WebCache	in C#	
+	Reference = system.Web.Helpers.WebCache
+	Method = Set,Get and Remove
+	1) Get : Retrieves the specified item from the WebCache object.
+		WebCache.Get(NameOfWebCatche);
+	
+	2) Set : Inserts an item into the WebCache object.
+		Set(string key,Object value,int minutesToCache,bool slidingExpiration)
+		- minutesToCache : byDefault -> 20
+		- slidingExpiration : byDefault -> true
+			Optional. true to indicate that the cache item expiration is reset each time the item is accessed, or false to indicate that the expiration is based the absolute time since the item was added to the cache
+		
+		
+	3) Remove : Removes the specified item from the WebCache object.	
+		WebCache.Remove(NameOfWebCatche);
+		
+	Guid link = https://msdn.microsoft.com/en-us/library/system.web.helpers.webcache(v=vs.111).aspx	
+		
+=> 'CTE' with 'WITH' in SqlServer		
+	-> CTE (Common Table Expression)
+	-> It can generate temparary table to retriew data from it in sql server 
+	-> It uses 'WITH' clause
+	
+	-> guid link = https://www.red-gate.com/simple-talk/sql/t-sql-programming/sql-server-cte-basics/
+		
+----------------------------------------------------- 27-12-2017 --------------------------------------------------------		
+=> Categotegory Faceted Nevigation in mvc C#
+
+----------------------------------------------------- 28-12-2017 --------------------------------------------------------
+=> How to get files from folder and delete it
+		string[] arr_files = Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(""));
+		foreach(string filepath in arr_files)
+		{
+			FileInfo fi = new FileInfo(filepath)
+			fi.Delete();
+		}
+
+----------------------------------------------------- 10-01-2018 --------------------------------------------------------		
+=> Comparition between 'IN' and 'INNER JOIN' in StoredProcedure in sql server
+	-> INNER JOIN is faster than the IN 
+		
+----------------------------------------------------- 25-01-2018 --------------------------------------------------------
+=> Bind Dropdownlist in razor view
+	///// staic
+	@Html.DropDownList("Mobiledropdown3", new List<SelectListItem>  
+		{ new SelectListItem { Text = "HTC DESIRE", Value = "1", Selected=true},  
+		new SelectListItem { Text = "Moto G", Value = "2"},  
+		new SelectListItem { Text = "GO mobiles", Value = "3"}  
+		}, "Select Mobile")  
+		
+	///// from database
+	@Html.DropDownList("Mobiledropdown2", ViewBag.VBMobileList as SelectList)  	
+		
+	///// binding	
+	List city = new List<SelectListItem>
+	{
+		new SelectListItem { Selected = true, Text = string.Empty, Value = "-1"},
+		new SelectListItem { Selected = false, Text = "Homeowner", Value = ((int)UserType.Homeowner).ToString()},
+		new SelectListItem { Selected = false, Text = "Contractor", Value = ((int)UserType.Contractor).ToString()},
+	};		
+
+----------------------------------------------------- 11-05-2018 --------------------------------------------------------
+
+-> How to manually add or modify one column in entity framework data table.
+
+-> How to load custom data from entity framework using custom stored procedure (LINQ query)
+	
+----------------------------------------------------- 17-05-2018 --------------------------------------------------------
+
+=> Difference between CTE and Temp Table and Table Variable	
+	link - https://www.dotnettricks.com/learn/sqlserver/difference-between-cte-and-temp-table-and-table-variable
+	
+	Demo file path -> D:\Bhavesh Jadav\Projects\Web Projects\Text Files (Tasks)\17-05-2018\Difference between CTE and Temp Table and Table Variable.txt
+   
+----------------------------------------------------- 13-06-2018 -------------------------------------------------------- 
+   
+=> Learn how to build a web project and put into live server.
+=> How to update live website using builds and views.
+=> How to update live database scripts and data. 
+   
+----------------------------------------------------- 16-07-2018 --------------------------------------------------------   
+   
+=> Created PDF using itextCSharp and PdfPtable   
+
+----------------------------------------------------- 25-07-2018 -------------------------------------------------------- 
+   
+=> Create and append google SEO script on header in front view.
+
+----------------------------------------------------- 22-11-2018 -------------------------------------------------------- 
+=> paypal-payment-gateway-integration-in-asp-net-mvc
+	Lunk - https://www.c-sharpcorner.com/article/paypal-payment-gateway-integration-in-asp-net-mvc/
+
+   
+c# comment
+-------------------------------------   
+/// <summury>
+/// Author       : Bhavesh Jadav
+/// Created date : 11-Jun-2018
+/// Description  : List Warehouse inventory type list
+/// <summury>
+
+Sql comment
+-------------------------------------
+
+-- ===================================================
+-- Created By  : Bhavesh Jadav
+-- Created On  : 05-Jun-2018
+-- Description : Insert usp_PurchaseOrderListDetails
+-- ===================================================
+
+-- ===================================================
+-- Updated By : Bhavesh Jadav
+-- Updated On : 05-Jun-2018
+-- Description : 
+-- ===================================================
+
+-- ===================================================
+-- Added By : Bhavesh Jadav
+-- Added On : 05-Jun-18
+-- Description : 
+-- ===================================================
+
+Bugs:
+-----------
+1) front :- In Mobile view menu button not work after placed a order.
+2) admin-order :-
+	a) After refunded amount it not subtract from final total of order.
+	b) Page: Order > tab: Manually shipping
+		-> Each time quanuty subtract from inventory when click on 'Update' or 'Update and Send email' button 
+
+Pending: 
+-----------
+1) make saparate query for VEndor PO list : admin-order
+2) generating Packing slip is remaining
+3) Give Lable of Order Status and button for print packing slip
+4) Some design change are remaing in Generate Pending PO page
+5) add Vendor PO List in menu : admin-order
+
+	
+=> Bug: Eyeglasses front live
+	http://kdpl26:96/frameColor/blue/1/ray-ban.html?sort=a-z&prescription=false&isPolarized=false&instock=true
+		- no products are display
+
+	https://www.teamconnection.com/men-hoodies-and-pullovers.html
+		No record found and loader would not hiding.
+		
+	https://www.teamconnection.com/price,brand,bysleeve/25.00-49.99,nike~under%20armour,short%20sleeve/10218/men.html?sort=
+		prd 19 : but scrolling not working.
+		
+	https://www.teamconnection.com/women-singlets.html
+		prd 13 : but in facet menu all items shows count 1.
+		
+	http://localhost:64533/gender,frameShape,lensColor,frameColor/men~women,aviator,gray~green,blue/1/sunglasses.html?sort=a-z&prescription=true&Polarized=false&instock=true
+	http://localhost:64533/frameShape,frameColor/aviator,blue/1/sunglasses.html?sort=a-z&prescription=true&Polarized=false&instock=true	
+	
+	http://localhost:64533/frameType,frameShape,frameColor/full%20rim,aviator,blue/1/sunglasses.html?sort=a-z&prescription=false&Polarized=false&instock=true
+	Total 35 Results
+		type	
+			Full Rim (39)	
+		Frame Shape	
+			Aviator (33)
+		Color
+			Blue (39)
+	
+	http://localhost:64533/gender,lensColor,frameColor/men~women,brown,black/2/prada.html?sort=a-z&prescription=false&Polarized=false&instock=true
+		
+		
+=> Bug: TC front
+			
+	http://localhost:5050/type,brand,price/carts%20or%20hoppers,gamma,225.00%20and%20above/39/alltennis.html?sort=ztoa
+		- price box shows items count but: products count 0	
+
+	http://localhost:5050/bygrouping/training~coaching%20gear/10218/men.html?sort=
+	BY GROUPING
+		Training (140)
+		Coaching Gear (394)
+		
+		but product count is : 405
+		
+	http://localhost:5050/type,brand,bygrouping/shorts~hoodies%20and%20pullovers,nike,training~coaching%20gear/10218/men.html?sort=
+	Note: problem at load more products after click brand filter.
+
+	
+=> Bug: TC front (06-Aug-18)
+	https://www.teamconnection.com/women.html
+	jo aa link ma 800 + product che but load more karish to around 100 pachi data nathi avto 
+	
+	https://www.teamconnection.com/men.html
+	aa ma pan 1000 + che 		
+		
+=> Bug: TC admin (06-Aug-18)		
+	http://localhost:4148/Admin/Products/ProductDisplayOrder2.aspx	
+	store: TC > Women: Tops > Products is repeated (TC-TE3361)
+		Becuase of third level category.
+				
+=> Bug: EG-front (14-sep-18)	
+	http://localhost:64533/category,frameType,frameShape,frameColor/sunglasses~eyeglasses,full%20rim,rectangle,black~blue/3280/oakley.html?sort=a-z&prescription=false&Polarized=false&instock=true
+	- problem in Gender count
+	
+	http://localhost:64533/gender/men~women/3280/oakley.html?sort=a-z&prescription=false&Polarized=false&instock=true
+	- problem in Gender count	
+
+=> Bug: EG-front (17-sep-18)	
+	- when we load more products ex. 48 after that if we sort it by price, a-z,... then it will shows only first 12 sorted products.
+
+=> Bug: EG-front (18-sep-18)	
+	1) When I add product without prescription then it will redirect to live site.
+	2) when I created new account and go for check out at that time shipping methods are not displayed in check out page.
+	3) At patment, When I fill wrong expiry date and go next then it go ahead and validation msg was shown at place order click and then option to back for enter correct expiry date.
+	4) 2 errors at > page Checkoutcontroller > line 9775 and 9777
+
+
+=> 06-Aug-18
+
+=> Bug: TC-front (04-oct-18)	
+	http://localhost:5050/sport,price,brand/volleyball,50.00-74.99,nike~mizuno/10218/men.html?sort=atoz
+	after sorting no load more data come 	
+
+/*
+* Created by: Bhavesh Jadav
+* Created on: 12-Oct-2018
+* Description:
+*/	
+
+/*
+* Updated by: Bhavesh Jadav
+* Updated on: 12-Oct-2018
+* Description:
+*/
+	
+----------------------------------------------------- 29-Dec-18 ------------------------------------------------------		
+============================ lens charges price update related changes :- 29-dec-2018(en-756) ========================
+
+=> Project: Eyeglasses123(Admin-Warehouse)
+
+=> Note: 
+
+=> Databse Changes: 
+	file path: D:\Bhavesh Jadav\Projects\Web Projects\Text Files (Tasks)\Eyeglasses_Database_Changes-Script.sql
+	find: 29-Dec-18
+
+-> Backup path = D:\Bhavesh Jadav\Projects\Web Projects\Text Files (Tasks)\29-Dec-18\
+
+29-Dec-18 Updates
+------------------
+-> Eyeglasses123(front)
+    - Lens price changes in item prescription.
+	- Testing lens price changes using place order.
+	- Remaining knowledge transfer about facet navigation to AnkitSir.	
+
+
+
+	
